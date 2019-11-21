@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import './questions.dart';
+import './answers.dart';
+
+
 void main() {
   runApp(QuizApp());
 }
@@ -12,13 +16,13 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  var questionIndex = 0;
+  var _questionIndex = 0;
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionIndex = _questionIndex + 1;
     });
-    print(questionIndex);
+    print(_questionIndex);
   }
   @override
   Widget build(BuildContext context) {
@@ -35,29 +39,12 @@ class _QuizAppState extends State<QuizApp> {
       ),
       body: Column(
         children: [
-          Text(
-            questions[questionIndex],
+          Question(
+            questions[_questionIndex],
           ),
-          //This is a name function, because it has a name
-          RaisedButton(
-            child: Text('Answer 1'),
-            onPressed: answerQuestion,
-          ),
-          //if you have a funt, you'll never call in an application again, you can add a funct, without a name, but add parenthesis to add parameters.
-          RaisedButton(
-            child: Text('Answer 2'),
-            onPressed: () => print ('answer chosen'),
-          ),
-          //this option is d same unnaned funct, but will take in more commands.
-          RaisedButton(
-            child: Text('Answer 3'),
-            onPressed: () {
-              //some block of code
-              //........
-              print ('answer 3 chosen');
-           },
-          ), 
-          
+          Answer(_answerQuestion),
+          Answer(_answerQuestion),
+          Answer(_answerQuestion), 
 
         ],
       ),
