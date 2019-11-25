@@ -15,18 +15,7 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  var _questionIndex = 0;
-
-  void _answerQuestion() {
-    setState(() {
-      _questionIndex = _questionIndex + 1;
-    });
-    print(_questionIndex);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var questions = [
+  final questions = const[
       {
         'questionText': 'What\'s your Favorite color?',
         'answers': ['Black', 'Red', 'Purple', 'White'],
@@ -40,6 +29,25 @@ class _QuizAppState extends State<QuizApp> {
         'answers': ['Puppy', 'Snake', 'Cat', 'Rabbit'],
       },
     ];
+  var _questionIndex = 0;
+
+  void _answerQuestion() {
+    
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+    print(_questionIndex);
+    if (_questionIndex < questions.length) {
+      print('we have more questions');
+    } else {
+      print('No more questions');
+    }
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -47,7 +55,7 @@ class _QuizAppState extends State<QuizApp> {
           title: Text("QuizApp"),
           centerTitle: true,
         ),
-        body: Column(
+        body: _questionIndex < questions.length ? Column(
           children: [
             Question(
               questions[_questionIndex]['questionText'],
@@ -56,7 +64,7 @@ class _QuizAppState extends State<QuizApp> {
               return Answer(_answerQuestion, answer);
             }).toList()
           ],
-        ),
+        ) : Center(child: Text('Congratulations!'),),
       ),
     );
   }
