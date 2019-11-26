@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './questions.dart';
-import './answers.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() {
   runApp(QuizApp());
@@ -15,56 +15,68 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  final questions = const[
-      {
-        'questionText': 'What\'s your Favorite color?',
-        'answers': ['Black', 'Red', 'Purple', 'White'],
-      },
-      {
-        'questionText': 'What\'s your Favorite food?',
-        'answers': ['Jollof', 'Fried Rice', 'Banga Rice', 'Coconut Rice'],
-      },
-      {
-        'questionText': 'What\'s your Favorite pet?',
-        'answers': ['Puppy', 'Snake', 'Cat', 'Rabbit'],
-      },
-    ];
+  final _questions = const [
+    {
+      'questionText': 'What\'s your Favorite movie?',
+      'answers': [
+        {'text': 'Silicon Valley', 'score': 1},
+        {'text': 'Suits', 'score': 2},
+        {'text': 'Big Bang Theory', 'score':3},
+        {'text': 'Snow white', 'score': 4}
+        ],
+    },
+    {
+      'questionText': 'What\'s your Second Language?',
+      'answers': [
+        {'text':'Igbo', 'score':8},
+        {'text': 'Hausa', 'score':6},
+        {'text': 'Yoruba', 'score':7},
+        {'text': 'English', 'score':10},
+        ],
+    },
+    {
+      'questionText': 'Who\'s your Favorite Artist?',
+      'answers': [
+        {'text':'6lack', 'score': 3},
+        {'text': 'J.Cole', 'score': 7},
+        {'text': 'John Legend', 'score':10},
+        {'text': 'Adele', 'score':5},
+        ],
+    },
+  ];
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
-    
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
     print(_questionIndex);
-    if (_questionIndex < questions.length) {
-      print('we have more questions');
+    if (_questionIndex < _questions.length) {
+      print('done');
     } else {
       print('No more questions');
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, 
       home: Scaffold(
         appBar: AppBar(
           title: Text("QuizApp"),
           centerTitle: true,
         ),
-        body: _questionIndex < questions.length ? Column(
-          children: [
-            Question(
-              questions[_questionIndex]['questionText'],
-            ),
-           ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
-              return Answer(_answerQuestion, answer);
-            }).toList()
-          ],
-        ) : Center(child: Text('Congratulations!'),),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+              answerQuestion: _answerQuestion, 
+              questionIndex: _questionIndex,
+              questions: _questions,
+            )
+            : Result(_totalScore)
       ),
     );
   }
